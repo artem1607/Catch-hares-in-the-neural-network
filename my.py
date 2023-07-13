@@ -9,6 +9,7 @@ def Fi(a1, a2):
     yb = int(a2[1])
     dx = xb - xa
     dy = yb - ya
+    #Нахождения гипотенузы, косинуса и после через функцию арккосинуса находим угол
     gip = (dx ** 2 + dy ** 2) ** 0.5
     cosin = dx / gip
     deg = numpy.arccos([cosin])
@@ -20,14 +21,13 @@ def Fi(a1, a2):
     if itog == 360:
         itog = 0
         return -1
-
     else:
         return itog
 #подключение
-f=open('temka', 'w')
+f=open('shell', 'w')
 f.write('''<?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000px" height="1000px">\n''')
-#точки и функция всех левых точек
+#рандомный список точек
 tochki = [(random.randint(3, 20), random.randint(3, 20)), (random.randint(3, 20), random.randint(3, 20)), (random.randint(3, 20), random.randint(3, 20)), 
 (random.randint(3, 20), random.randint(3, 20)), (random.randint(3, 20), random.randint(3, 20)), (random.randint(3, 20), random.randint(3, 20)), 
 (random.randint(3, 20), random.randint(3, 20)), (random.randint(3, 20), random.randint(3, 20)), (random.randint(3, 20), random.randint(3, 20)), 
@@ -74,14 +74,13 @@ for ter in maxy:
 for let in tochki:
     if let[1] == max(maxy):
         maxe.append((let[0], max(maxy)))
-print(sorted(maxe), 777777777777777777777777777)
-print(tochki[0][1], 8888888888888888888888888888888888888888888888888)
 maxi = 0
 lef = 0
 toper = 0
 mok = 0
 endpoint = 0
 mini = 0
+#Функция всех левых точек
 def Levo(tok):
     global toper
     global lef
@@ -100,18 +99,20 @@ def Levo(tok):
     kot = 0
     if tok in tochki:
         tochki.remove(tok)
-    print(tochki)
     for i in range(len(tochki)):
         xy = tochki[i]
         xc = int(xy[0])
         yc = int(xy[1])
+        #Запускаем функцию вычисления углов
         znak = Fi((tok), (xc, yc))
         if znak == -1:
             continue
+        #Рисуем точку из списка
         f.write(f'''<rect x="{xc * 40}" y="{yc * 40}" width="5" height="5" fill="blue" stroke="black" stroke-width="2"/>\n''')
         if i == 0:
             maxi = znak
             lef = xy
+        #Условия на определение самой левой точки
         elif znak > maxi:
             maxi = znak
             lef = xy
@@ -136,12 +137,12 @@ def Levo(tok):
             s =  maxdown - minup + 2 * math.pi
             if s < math.pi:
                 lef = gav
+    #Рисований линий из нынешней точки в самую левую
     f.write(f'''<line  x1="{tok[0] * 40}" y1="{tok[1] * 40}" x2="{int(lef[0]) * 40}" y2="{int(lef[1]) * 40}" style="stroke:rgb(139,0,255);stroke-width:2"/>\n''')
     return lef, gav
-
+#Запуск функции самых левых точек
 print(Levo((1, 2)))
 guf = lef
-print(maxi)
 for j in range(14):
     if lef == endpoint:
         break
@@ -149,9 +150,9 @@ for j in range(14):
         toper = 1
     j - 1
     print(Levo((lef)))
-    print(lef, maxi)
     if j == 1:
         tochki.insert(0, guf)
+#Рисование линии из последней точки в самую первую
 f.write(f'''<line  x1="{endpoint[0] * 40}" y1="{(endpoint[1]) * 40}" x2="{int(guf[0]) * 40}" y2="{int(guf[1]) * 40}" style="stroke:rgb(139,0,255);stroke-width:2"/>\n''')
 f.write(f'''<rect x="{1 * 40}" y="{2 * 40}" width="5" height="5" fill="blue" stroke="blue" stroke-width="6"/>\n''')
 #f.write(f'''<line  x1="{lef[0] * 40}" y1="{lef[1] * 40}" x2="{int(guf[0]) * 40}" y2="{int(guf[1]) * 40}" style="stroke:rgb(255,244,79);stroke-width:2"/>\n''')
